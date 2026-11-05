@@ -1,4 +1,4 @@
-# RingIQ
+# JabLab
 
 **Upload a training video. Get your strikes counted, your form graded, and feedback on what to fix.**
 
