@@ -4,7 +4,7 @@ import app from './app.js'        // imports app from app.js which is wherer the
 
 import {connectDB} from './config/database.js'      // imports the function that connects use to mongodb from the database.js file
 
-const port = 8080
+const port = process.env.PORT || 8080
 
 async function startServer() {      // use async on this function because connecteing to the database isnt instant
                                     // and need to wait for it to connect to the databse
