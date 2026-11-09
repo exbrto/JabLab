@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import app from './app.js'        // imports app from app.js which is wherer the routes are
 
 import {connectDB} from './config/database.js'      // imports the function that connects use to mongodb from the database.js file

@@ -10,7 +10,7 @@
 
 People who train alone, at home or in the gym without a coach, don't have anyone watching their technique. Bad habits like dropping the guard, not fully extending a jab, or cutting squats short go unnoticed and turn into habits.
 
-RingIQ is a full-stack web app that acts as a coach in your corner. You upload a video of your boxing, Muay Thai, kickboxing, or strength session, and RingIQ tracks your body through the video, counts your strikes and reps, grades your form, and saves your results so you can see how your technique improves over time.
+JabLab is a full-stack web app that acts as a coach in your corner. You upload a video of your boxing, Muay Thai, kickboxing, or strength session, and JabLab tracks your body through the video, counts your strikes and reps, grades your form, and saves your results so you can see how your technique improves over time.
 
 ## How It Works
 

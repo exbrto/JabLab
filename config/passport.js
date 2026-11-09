@@ -29,7 +29,7 @@ export default function(passport) {
 
         } catch(error) {
 
-            done(err)
+            return done(error)
 
         }
     });

@@ -1,8 +1,10 @@
+import MongoStore from 'connect-mongo'
+
 import express from 'express';
 
-import medsRoutes from './routes/medsRoutes.js'  // imports routes for anyting that starts with /workouts
+import sessionRoutes from './routes/sessionRoutes.js'  // imports routes for anyting that starts with /workouts
 
-import Meds from './models/Meds.js' // imports the model that are stored in the database.
+import Sessions from './models/Sessions.js' // imports the model that are stored in the database.
 
 import session from 'express-session'
 
@@ -28,7 +30,13 @@ app.use(express.json());    // needed for updates and deletes
 
 app.use(express.static('public'));  // send files to the browswer when the browser asks for it, taken from the public folder like css, browser-side js, and images
 
-app.use(session({secret: 'healthRC'}))
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({mongoUrl: process.env.WUMBOLOGY, collectionName: 'userSessions'}),
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 7}
+}))
 
 app.use(passport.initialize())
 
@@ -36,7 +44,7 @@ app.use(passport.session())
 
 app.use(flash())
 
-app.use('/prescriptions', medsRoutes)    // this will send req's to the workoutsRoutes file
+app.use('/sessions', sessionRoutes)    // this will send req's to the workoutsRoutes file
 
 // mongoose.connect(url, {
 // //   require('./app/routes.js')(app, passport, db, ObjectId); 
@@ -53,7 +61,7 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/medications',
+    successRedirect: '/history',
     failureRedirect: '/login',
     failureFlash: true
 }))
@@ -63,7 +71,7 @@ app.get('/signup', (req, res) => {
 })
 
 app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/medications',
+    successRedirect: '/login',
     failureRedirect: '/signup',
     failureFlash: true
 }))
@@ -74,15 +82,16 @@ app.get('/logout', (req, res) => {
     })
 })
 
-app.get('/medications', isLoggedIn, async (req, res, next) => {      // will display every workout on the homepage    
+app.get('/history', isLoggedIn, async (req, res, next) => {      // will display every workout on the homepage    
     
     try {                                                       // gets every worlkout from the databse and 
-        const meds = await Meds.find().sort({dateReceived: -1}) // find then sort returns the data and -1 sorts them by the newest
+        const sessions = await Sessions.find().sort({date: -1}) // find then sort returns the data and -1 sorts them by the newest
 
-        res.render('index', {meds}) 
+        res.render('history', {sessions}) 
     } catch(error) {
-        next(error)
         console.log('Failed to get data')
+        next(error)
+        
     }
 })
 
