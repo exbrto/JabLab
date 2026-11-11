@@ -1,12 +1,40 @@
 <%- include('partials/header') -%>
     
     <section class="historySection">
-        <% for(let i = 0; i < sessions.length; i++) {%>
-            <section class="sessionCards">
-            
-            </section>
-        <% } %>
+        <h2>Session History</h2>
+        <form action="/sessions" method="POST">
+            <input type="date" name="date" required>
+            <input type="number" name="duration" placeholder="Round Length" required>
+            <input type="number" name="jab" placeholder="Jabs" value="0" min="0" required>
+            <input type="number" name="cross" placeholder="Cross" value="0" min="0" required>
+            <input type="number" name="kicks" placeholder="Kicks" value="0" min="0" required>
+            <input type="number" name="knees" placeholder="Knees" value="0" min="0" required>
+            <input type="number" name="ringIQ" placeholder="RingIQ score" min="0" max="100" required>
+            <select name="mistakes" required>
+                <option value="none">None</option>
+                <option value="guard dropped">Guard dropped</option>
+                <option value="no full extention">No full extension</option>
+                <option value="slow return to guard">Slow return to guard</option>
+            </select>
+            <textarea name="notes" placeholder="Notes"></textarea>
+            <button type="submit">Save session</button>
+        </form>
     </section>
+
+    <% for (let i = 0; i < sessions.length; i++) { %>
+    <section class="sessionCards">
+        <h3><%= sessions[i].date.toLocaleDateString('en-US', {timeZone: 'UTC'}) %></h3>
+        <p>RingIQ: <%= sessions[i].ringIQ %></p>
+        <p>Jab <%= sessions[i].jab %> Cross <%= sessions[i].cross %> Kicks <%= sessions[i].kicks %> Knees <%= sessions[i].knees %></p>
+        <p>Session Duration</p>
+        <p>Top mistake:</p>
+
+        <input type="text" id="notes-<%= sessions[i]._id %>" value="<%= sessions[i].notes %>">
+        <button type="button" class="editSave" data-edit-save-id="<%= sessions[i]._id %>">Save Notes</button>
+        <button type="button" class="trash" data-trash-id="<%= sessions[i]._id %>">Delete</button>
+    </section>
+    <% } %>
+
     <script src="https://kit.fontawesome.com/d64fd93eee.js" crossorigin="anonymous"></script>
     <script src="/js/main.js"></script>
 

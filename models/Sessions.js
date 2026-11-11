@@ -1,21 +1,20 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose' 
 
-// Schema is like a blueprint for one worklout session. enum: [] --> says these are the only values allowd for this feild.
-// lowercase: true ==> turn the value into lowercase before saging it. 
 const sessionsSchema =  new mongoose.Schema({
+    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}, // ref: User points to the User.js model
     date: {type: Date, required: true},
-    duration: {type: Number, required: true},    // option value must in the select must be the same as the string must lowercased
-    jab: {type: Number, required: true},
-    cross: {type: Number, required: true},
-    kicks: {type: Number, required: true},
-    knees: {type: Number, required: true},
+    duration: {type: Number, required: true},
+    jab: {type: Number, default: 0},
+    cross: {type: Number, default: 0},
+    kicks: {type: Number, default: 0},
+    knees: {type: Number, default: 0},
     ringIQ: {type: Number, required: true},
     mistakes:{type: String, required: true},
-    notes: {type: String, default: ''}
+    notes: {type: String, default: ''}  // Users own notes for a training session
 })
 
-// The model is what we use to Create, Read, Update, and Delete workout sessions
-// Workouts is what becomes the collection 'workouts' in the mongodb database
+// The model is what we use to Create, Read, Update, and Delete sessions
+// Sessions is what becomes the collection 'sessions' in the mongodb database
 const Sessions = mongoose.model('Sessions', sessionsSchema)
 
-export default Sessions   // exports the model so that workoutsContoler.js can usse it
+export default Sessions   // exports the model so sessionsController can use it

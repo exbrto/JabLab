@@ -6,6 +6,7 @@ export async function postSession(req, res, next) {       // this function runs 
         const { date, duration, jab, cross, kicks, knees, ringIQ, mistakes, notes } = req.body    // pulls each field out and req.body holds the form data
                                                                                                                             // like a selection is held in req.body.sessionType
         const newSession = await Sessions.create({     // creates a new wokrout in the database, await means mongoose checks every
+            userId: req.user._id,
             date,                                       // value first to make sure something that isnt allowd is wasnt entered, then   
             duration,                                // it an erorr will occur and itll jump to catch.
             jab, 
@@ -36,7 +37,7 @@ export async function updateSession(req, res, next) {
         const {notes} = req.body  // take the new value that was edited and saved
 
         const updatedSessionNotes = await Sessions.findByIdAndUpdate(
-            id,
+            {_id: id, userId: req.user._id},
             {notes},
             {new: true, runValidators: true}
         )
@@ -57,7 +58,8 @@ export async function deleteSession(req, res, next) {
     try {
         const {id} = req.params
 
-        const deleteThisShi = await Sessions.findByIdAndDelete(id)
+        const deleteThisShi = await Sessions.findByIdAndDelete(
+        {_id: id, userId: req.user._id})
 
         res.status(200).json({
             success: true,

@@ -1,16 +1,16 @@
-import 'dotenv/config'
+import 'dotenv/config'  // Loads the env file into process.env
 
-import app from './app.js'        // imports app from app.js which is wherer the routes are
+import app from './app.js'     // Runs app.js 
 
-import {connectDB} from './config/database.js'      // imports the function that connects use to mongodb from the database.js file
+import {connectDB} from './config/database.js'    // imports the function that connects to mongodb from the database.js file
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080  // Picks which port to listen too, Render uses it's own port so port 8080 won't work
 
-async function startServer() {      // use async on this function because connecteing to the database isnt instant
-                                    // and need to wait for it to connect to the databse
-    try {      //connect to the database first and wait until the connection finishes, if connection fails it jumps to the catch error                     
-        await connectDB()
-        app.listen(port, () => {            // if it connects to the databse, then the server starts and begins listening for requests
+async function startServer() {      
+                                    
+    try {                           
+        await connectDB()   // async/await forces to wait until mongodb asnwers
+        app.listen(port, () => {    // starts the server after it connects to mongofb
             console.log(`server runnning on port ${port}`)
         })
     } catch(error){

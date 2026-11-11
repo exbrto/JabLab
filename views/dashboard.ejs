@@ -1,0 +1,43 @@
+<%- include('partials/header') -%>
+
+    <section class="welcomeMessage">
+        <h2>Welcome back</h2>
+        <!-- User -->
+    </section>
+
+    <section class="userStats">
+        <section>
+            <h3><%= totalSessions %></h3>
+            <p>Sessions</p>
+        </section>
+        <section>
+            <h3><%= trainingStreak %></h3>
+            <p>Day streak</p>
+        </section>
+        <section>
+            <h3><%= ringIQ %></h3>
+            <p>Average RingIQ</p>
+        </section>
+    </section>
+
+    <a href="/analyze" class="analyzeBtn">Analyze your session</a>
+
+    <section class="userSessions">
+        <h2>Recent Training Sessions</h2>
+
+    <% if (recentSessions.length === 0) { %>
+        <p>You currently have no training sessions</p>
+    <% } %>
+
+    <% for (let i = 0; i < recentSessions.length; i++) { %>
+        <div class="recentCard">
+            <p><%= recentSessions[i].date.toLocaleDateString('en-US', {timeZone: 'UTC'}) %></p>
+            <p>RingIQ: <%= recentSessions[i].ringIQ %></p>
+            <p>Strikes: <%= recentSessions[i].jab + recentSessions[i].cross + recentSessions[i].kicks + recentSessions[i].knees %></p>
+        </div>
+    <% } %>
+
+        <a href="/history"> See all session history</a>
+    </section>
+    
+<%- include('partials/footer') -%>
